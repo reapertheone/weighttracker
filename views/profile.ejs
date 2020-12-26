@@ -46,44 +46,49 @@
                         
                     </tr>
                     
-                <% } %>
-                <% if (result.measure.length>=2) { %>
-                <tfoot>
-                    <tr><td colspan="10">Progress Since Start</td></tr>
-                    <tr>
-                        <td class="height"></td>
-                        <td class="weight"><%=result.measure[0].weight-result.measure[result.measure.length-1].weight %> kg</td>
-                        <td class="waist"><%=result.measure[0].waist-result.measure[result.measure.length-1].waist %> cm</td>
-                        <td class="hip"><%=result.measure[0].hip-result.measure[result.measure.length-1].hip %> cm</td>
-                        <td class="chest"><%=result.measure[0].chest-result.measure[result.measure.length-1].chest %> cm</td>
-                        <td class="rightArm"><%=result.measure[0].rightArm-result.measure[result.measure.length-1].rightArm %> cm</td>
-                        <td class="rightThigh"><%=result.measure[0].rightThigh-result.measure[result.measure.length-1].rightThigh %> cm</td>
-                        <td class="leftArm"><%=result.measure[0].leftArm-result.measure[result.measure.length-1].leftArm %> cm</td>
-                        <td class="leftThigh"><%=result.measure[0].leftThigh-result.measure[result.measure.length-1].leftThigh %> cm</td>
-                    </tr>
                     
-    
-                    <tr><td colspan="10">Progress since last measure</td></tr>
-                    <tr>
-                        <td></td>
-                        <td><%=result.measure[result.measure.length-2].weight-result.measure[result.measure.length-1].weight %> kg</td>
-                        <td><%=result.measure[result.measure.length-2].waist-result.measure[result.measure.length-1].waist %> cm</td>
-                        <td><%=result.measure[result.measure.length-2].hip-result.measure[result.measure.length-1].hip %> cm</td>
-                        <td><%=result.measure[result.measure.length-2].chest-result.measure[result.measure.length-1].chest %> cm</td>
-                        <td><%=result.measure[result.measure.length-2].rightArm-result.measure[result.measure.length-1].rightArm %> cm</td>
-                        <td><%=result.measure[result.measure.length-2].rightThigh-result.measure[result.measure.length-1].rightThigh %> cm</td>
-                        <td><%=result.measure[result.measure.length-2].leftArm-result.measure[result.measure.length-1].leftArm %> cm</td>
-                        <td><%=result.measure[result.measure.length-2].leftThigh-result.measure[result.measure.length-1].leftThigh %> cm</td>
-                    </tr>
-                </tfoot>
+                <% } %>
         </table>
-        <a class=" btn btn-primary" href=<%= `${result._id}/measures/new`%> >New measure</a>  <a class="btn btn-warning disabled"  href=<%= `/${result._id}/${result.measure[result.measure.length-1]._id}`%>>Change last measure</a>
-            
-            <% }else{ %>
-            </table>
-                    <h2>No Data yet make a new measure</h2>
-                    <a class=" btn btn-primary" href=<%= `/${result._id}/measures/new`%> >New measure</a>
-                <% } %> 
+
+        <% if (result.measure.length>=2) { %>
+            <table class="table table-not">
+            <tfoot>
+                <tr><td colspan="10">Progress Since Start</td></tr>
+                <tr>
+                    <td class="height"></td>
+                    <td class="weight"><%=result.measure[0].weight-result.measure[result.measure.length-1].weight %> kg</td>
+                    <td class="waist"><%=result.measure[0].waist-result.measure[result.measure.length-1].waist %> cm</td>
+                    <td class="hip"><%=result.measure[0].hip-result.measure[result.measure.length-1].hip %> cm</td>
+                    <td class="chest"><%=result.measure[0].chest-result.measure[result.measure.length-1].chest %> cm</td>
+                    <td class="rightArm"><%=result.measure[0].rightArm-result.measure[result.measure.length-1].rightArm %> cm</td>
+                    <td class="rightThigh"><%=result.measure[0].rightThigh-result.measure[result.measure.length-1].rightThigh %> cm</td>
+                    <td class="leftArm"><%=result.measure[0].leftArm-result.measure[result.measure.length-1].leftArm %> cm</td>
+                    <td class="leftThigh"><%=result.measure[0].leftThigh-result.measure[result.measure.length-1].leftThigh %> cm</td><td></td>
+                </tr>
+                
+
+                <tr><td colspan="10">Progress since last measure</td></tr>
+                <tr>
+                    <td></td>
+                    <td><%=result.measure[result.measure.length-2].weight-result.measure[result.measure.length-1].weight %> kg</td>
+                    <td><%=result.measure[result.measure.length-2].waist-result.measure[result.measure.length-1].waist %> cm</td>
+                    <td><%=result.measure[result.measure.length-2].hip-result.measure[result.measure.length-1].hip %> cm</td>
+                    <td><%=result.measure[result.measure.length-2].chest-result.measure[result.measure.length-1].chest %> cm</td>
+                    <td><%=result.measure[result.measure.length-2].rightArm-result.measure[result.measure.length-1].rightArm %> cm</td>
+                    <td><%=result.measure[result.measure.length-2].rightThigh-result.measure[result.measure.length-1].rightThigh %> cm</td>
+                    <td><%=result.measure[result.measure.length-2].leftArm-result.measure[result.measure.length-1].leftArm %> cm</td>
+                    <td><%=result.measure[result.measure.length-2].leftThigh-result.measure[result.measure.length-1].leftThigh %> cm</td>
+                    <td></td>
+                </tr>
+           
+    </table>
+    <a class=" btn btn-primary" href=<%= `${result._id}/measures/new`%> >New measure</a>  <a class="btn btn-warning disabled"  href=<%= `/${result._id}/${result.measure[result.measure.length-1]._id}`%>>Change last measure</a>
+        
+        <% }else{ %>
+        
+                <h2>No Data yet make a new measure</h2>
+                <a class=" btn btn-primary" href=<%= `/${result._id}/measures/new`%> >New measure</a>
+            <% } %> 
          
                 <script src="\js\asd\front.js"></script>
 </body>

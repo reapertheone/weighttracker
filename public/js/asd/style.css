@@ -3,6 +3,28 @@ table{text-align:center;}
 
 td:first-child{background: royalblue;color:white}
 
+tr:nth-child(odd){
+    border-color:black
+}
+
+td:nth-child(odd){
+    border-style: solid;
+    border-color:black;
+    border-right-width: 3px;
+    border-right-width:3px
+}
+td:nth-child(even){
+    border-style: solid;
+    border-color:black;
+    border-right-width: 3px;
+    border-right-width:3px
+}
+
+td:last-child{
+    color:white;
+    background-color: royalblue;
+}
+
 thead>tr{background: royalblue;color:white;}
 
 

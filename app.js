@@ -5,6 +5,7 @@ const ejs=require('ejs')
 const path=require('path')
 const mongoose=require('mongoose')
 const session=require('express-session')
+const dotenv=require('dotenv')
 
 
 mongoose.connect('mongodb://localhost:27017/newtestbase', { useNewUrlParser: true, useUnifiedTopology: true })
@@ -73,12 +74,40 @@ app.get('/logout',(req,res)=>{
     res.redirect('/login')
 })
 
+app.get('/data/admin',async (req,res)=>{
+    if(!req.session.uid){
+        res.redirect('/login')
+    }else{
+        admin=await User.findById(req.session.uid)
+        if(admin.email=='tutrai.gergo01@gmail.com'){
+            req.session.isAdmin=true
+            results=await User.find({})
+            res.render('admin',{results})
+        }else{
+           res.send('no permission')
+        }
+    
+
+    }
+})
+
+app.get('/admin/:profile',async (req,res)=>{
+    if(req.session.isAdmin){
+        const userid=req.params.profile
+        const result= await User.findById(userid).populate('measure')
+        res.render('profile',{result})
+    }else{
+        res.redirect('/login')
+    }
+})
+
 app.get('/:uid',async (req,res)=>{
     if(req.params.uid!==req.session.uid){
         res.send('Access denied')
     }else{
     
     const result=await User.findById(req.session.uid).populate('measure')
+    
     res.render('profile',{result})
     }
 })
@@ -119,10 +148,3 @@ app.post('/:uid/measures/new',async (req,res)=>{
 
 
 
-app.get('/admin',(req,res)=>{
-    res.send('Authorize admin from .env and list all registered user grouped by isClient if !=uid redirect to /login')
-})
-
-app.get('/admin/:profile',(req,res)=>{
-    res.send('See all measures with specified userid(:profile)')
-})

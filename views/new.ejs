@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%=user.name%></title>
+</head>
+<body>
+    <form action=<%=`/${user._id}/measures/new`%> method="POST">
+        <label for="height">Height</label><br>
+        <input type="number" step="0.01" name="height" id="height" required><label>cm</label><br>
+        <label for="weight">Weight</label><br>
+        <input type="number" step="0.01" name="weight" id="weight" required><label>kg</label><br>
+        <label for="waist">Waist diameter</label><br>
+        <input type="number" name="waist" step="0.01" id="waist" required><label>cm</label><br>
+        <label for="hip">Hip diameter</label><br>
+        <input type="number" name="hip" step="0.01" id="hip" required><label>cm</label><br>
+        <label for="chest">Chest diameter</label><br>
+        <input type="number" name="chest" step="0.01" id="chest" required><label>cm</label><br>
+        <label for="rightArm">Right arm diameter</label><br>
+        <input type="number" step="0.01" name="rightArm" id="rightArm" required><label>cm</label><br>
+        <label for="rightThigh">Right thigh diameter</label><br>
+        <input type="number" name="rightThigh" step="0.01" id="rightThigh" required><label>cm</label><br>
+        <label for="leftArm">Left arm diameter</label><br>
+        <input type="number" step="0.01" name="leftArm" id="leftArm" required><label>cm</label><br>
+        <label for="leftThigh">Left thigh diameter</label><br>
+        <input type="number" step="0.01" name="leftThigh" id="leftThigh" required><label>cm</label><br>
+    <br><button>Submit</button>
+    </form>
+</body>
+</html>

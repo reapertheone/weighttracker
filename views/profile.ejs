@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= result.name %> </title>
+</head>
+<body>
+ <h1><%=result.name %></h1>
+    <table>
+        <thead>
+            <tr>
+                
+                <td>Height</td>
+                <td>Weight</td>
+                <td>Waist</td>
+                <td>Hip</td>
+                <td>chest</td>
+                <td>Right Arm</td>
+                <td>Right Thigh</td>
+                <td>Left Arm</td>
+                <td>Left Thigh</td>
+                <td>Date</td>
+
+            </tr>
+        </thead>
+            <% for( let data of result.measure) { %>
+                <tr>
+                    <td><%=data.height%></td>
+                    <td><%=data.weight%></td>
+                    <td><%=data.waist%></td>
+                    <td><%=data.hip%></td>
+                    <td><%=data.chest%></td>
+                    <td><%=data.rightArm%></td>
+                    <td><%=data.rightThigh%></td>
+                    <td><%=data.leftArm%></td>
+                    <td><%=data.leftThigh%></td>
+                    <td><%=data.date.toLocaleDateString('en-UK')%></td>
+                </tr>
+                
+            <% } %>
+    </table>
+        
+</body>
+</html>

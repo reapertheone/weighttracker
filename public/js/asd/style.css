@@ -1,0 +1,8 @@
+
+table{text-align:center;}
+
+td:first-child{background: royalblue;color:white}
+
+thead>tr{background: royalblue;color:white;}
+
+

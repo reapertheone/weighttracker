@@ -7,10 +7,6 @@ const measureSchema = new mongoose.Schema({
         default:Date.now
 
     },   
-    height:{
-        type:Number,
-        required:true
-    },
     weight:{
         type:Number,
         required:true

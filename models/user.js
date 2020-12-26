@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema({
         type:Date,
         default:Date.now
     },
+    height:{
+        type:Number,
+        default:null
+    },
     measure: [
         {
             type: Schema.Types.ObjectId,

@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%=user.name%></title>
+    <link rel="stylesheet" href="\js\asd\bootstrap.min.css">
+    <link rel="stylesheet" href="\js\asd\style.css">
+    <script src="\js\asd\bootstrap.min.js"></script>
 </head>
 <body>
     <form action=<%=`/${user._id}/measures/new`%> method="POST">
-        <label for="height">Height</label><br>
-        <input type="number" step="0.01" name="height" id="height" required><label>cm</label><br>
         <label for="weight">Weight</label><br>
         <input type="number" step="0.01" name="weight" id="weight" required><label>kg</label><br>
         <label for="waist">Waist diameter</label><br>

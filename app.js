@@ -7,6 +7,12 @@ const mongoose=require('mongoose')
 const session=require('express-session')
 const dotenv=require('dotenv')
 
+app.use(express.static(__dirname + '/public'));
+app.use(express.urlencoded({ extended: true }));
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+app.use(session({secret:'notasecret'}))
+
 
 mongoose.connect('mongodb://localhost:27017/newtestbase', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
@@ -22,10 +28,7 @@ app.listen(3000)
 const Measure = require('./models/measure');
 const User = require('./models/user');
 
-app.use(express.urlencoded({ extended: true }));
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-app.use(session({secret:'notasecret'}))
+
 
 app.get('/',(req,res)=>{
     res.redirect('/login')
@@ -74,7 +77,7 @@ app.get('/logout',(req,res)=>{
     res.redirect('/login')
 })
 
-app.get('/data/admin',async (req,res)=>{
+app.get('/admin',async (req,res)=>{
     if(!req.session.uid){
         res.redirect('/login')
     }else{
@@ -134,11 +137,11 @@ app.post('/:uid/measures/new',async (req,res)=>{
     if(req.session.uid){
     const {height,weight,waist,hip,chest,rightArm,rightThigh,leftArm,leftThigh}=req.body
     const user=await User.findById(req.params.uid)
-    const measures=Measure({height:height,weight:weight,waist:waist,hip:hip,chest:chest,rightArm:rightArm,rightThigh:rightThigh,leftArm:leftArm,leftThigh:leftThigh})
+    const measures=Measure({weight:weight,waist:waist,hip:hip,chest:chest,rightArm:rightArm,rightThigh:rightThigh,leftArm:leftArm,leftThigh:leftThigh})
     await measures.save()
     user.measure.push(measures)
     await user.save()
-    res.send('kesz')}else{
+    res.redirect(`/${req.session.uid}`)}else{
         res.redirect('/login')
     }
 })

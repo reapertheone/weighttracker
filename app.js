@@ -115,12 +115,33 @@ app.get('/:uid',async (req,res)=>{
     }
 })
 
-app.get('/:uid/:measureid',(req,res)=>{
-    res.send('Change measure data form')
+app.get('/:uid/:measureid',async (req,res)=>{
+    result=await User.findOne({measure:req.params.measureid})
+    if(!result){
+        res.send('no data')
+    }else{
+        if(result._id==req.params.uid&&req.session.uid==req.params.uid){
+            const measure=await Measure.findById(req.params.measureid)
+            const user=await User.findById(req.params.uid)
+            res.render('edit',{measure,user})
+        }else{
+            res.send('something went wrong')
+        }
+    }
 })
 
-app.post('/:uid/:measureid',(req,res)=>{
-    res.send('Change measure data saving to database after redirect to profile')
+app.post('/:uid/:measureid',async (req,res)=>{
+    result=await User.findOne({measure:req.params.measureid})
+    if(!result){
+        res.send('no data')
+    }else{
+        if(result._id==req.params.uid&&req.session.uid==req.params.uid){
+            const measure=await Measure.findByIdAndUpdate(req.params.measureid,req.body)
+            res.redirect(`/${req.params.uid}`)
+        }else{
+            res.send('something went wrong')
+        }
+    }
 })
 
 

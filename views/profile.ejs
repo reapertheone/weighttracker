@@ -42,7 +42,7 @@
                         <td><%=data.rightThigh%> cm</td>
                         <td><%=data.leftArm%> cm</td>
                         <td><%=data.leftThigh%> cm</td>
-                        <td><a class="btn btn-warning disabled" href=<%= `/${result._id}/${data._id}`%>>Change</a></td>
+                        <td><a class="btn btn-warning" href=<%= `/${result._id}/${data._id}`%>>Change</a></td>
                         
                     </tr>
                     
@@ -82,7 +82,7 @@
                 </tr>
            
     </table>
-    <a class=" btn btn-primary" href=<%= `${result._id}/measures/new`%> >New measure</a>  <a class="btn btn-warning disabled"  href=<%= `/${result._id}/${result.measure[result.measure.length-1]._id}`%>>Change last measure</a>
+    <a class=" btn btn-primary" href=<%= `${result._id}/measures/new`%> >New measure</a>  <a class="btn btn-warning"  href=<%= `/${result._id}/${result.measure[result.measure.length-1]._id}`%>>Change last measure</a>
         
         <% }else{ %>
         

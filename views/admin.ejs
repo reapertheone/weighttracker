@@ -4,12 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Users</title>
+    <link rel="stylesheet" href="\js\asd\bootstrap.min.css">
+    <link rel="stylesheet" href="\js\asd\style.css">
+    <script src="\js\asd\bootstrap.min.js"></script>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href=<%=`/admin`%>>Admin</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item nav-item-outline">
+                    <a class="nav-link nav-link-outline" href="/admin/clients">Clients</a>
+                  </li>
+              
+              <li class="nav-item nav-item-outline">
+                <a class="nav-link nav-link-outline" href="/logout">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav> 
 
+<ul class="list-group">
     <% for( let person of results ) { %>
-    <a href=<%= `/admin/${person._id}` %>><%=`${person.name}`  %> </a> </br>
+    <li class="list-group-item list-group-item-primary col"><a class="btn btn-primary" href=<%= `/admin/${person._id}` %>><%=`${person.name}`  %> </a> </br></li>
     <% } %>
-    
+</ul>   
 </body>
 </html>

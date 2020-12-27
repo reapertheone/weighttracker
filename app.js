@@ -14,7 +14,7 @@ app.set('view engine', 'ejs');
 app.use(session({secret:'notasecret'}))
 
 
-mongoose.connect('mongodb://localhost:27017/newtestbase', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://localhost:27017/newtestbase', { useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify: false })
     .then(() => {
         console.log("MONGO CONNECTION OPEN!!!")
     })
@@ -46,10 +46,18 @@ app.post('/login',async (req,res)=>{
     const result=await User.findOne({name,email,birth})
 
     if(!result){
-        res.send('Try again')
+        res.redirect('/login')
     }else{
         req.session.uid=result._id
-        res.redirect(`/${req.session.uid}`)
+        if(result.email=="tutrai.gergo01@gmail.com"){
+            req.session.isAdmin=true
+            
+            res.redirect('/admin')
+        }else if(!req.session.isAdmin&&req.session.uid){
+            res.redirect(`/${req.session.uid}`)
+        }else{
+            res.redirect('/login')
+        }
     }
 })
 
@@ -74,6 +82,7 @@ app.post('/register',async (req,res)=>{
 
 app.get('/logout',(req,res)=>{
     req.session.uid=null
+    req.session.isAdmin=null
     res.redirect('/login')
 })
 
@@ -94,11 +103,28 @@ app.get('/admin',async (req,res)=>{
     }
 })
 
+app.get('/admin/clients',async (req,res)=>{
+    if(req.session.isAdmin){
+    results=await User.find({isClient:true})
+    res.render('admin',results)}else{res.redirect('/login')}
+})
+
 app.get('/admin/:profile',async (req,res)=>{
     if(req.session.isAdmin){
         const userid=req.params.profile
         const result= await User.findById(userid).populate('measure')
-        res.render('profile',{result})
+        res.render('adminview',{result})
+    }else{
+        res.redirect('/login')
+    }
+})
+
+
+app.post('/admin/:profile',async (req,res)=>{
+    if(req.session.isAdmin){
+        if(req.body.isClient){await User.findByIdAndUpdate(req.params.profile,{isClient:true})}else{await User.findByIdAndUpdate(req.params.profile,{isClient:false})}
+        
+        res.redirect(`/admin/${req.params.profile}`)
     }else{
         res.redirect('/login')
     }

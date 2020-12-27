@@ -87,7 +87,7 @@ app.get('/admin',async (req,res)=>{
             results=await User.find({})
             res.render('admin',{results})
         }else{
-           res.send('no permission')
+           res.redirect('/login')
         }
     
 
@@ -106,7 +106,7 @@ app.get('/admin/:profile',async (req,res)=>{
 
 app.get('/:uid',async (req,res)=>{
     if(req.params.uid!==req.session.uid){
-        res.send('Access denied')
+        res.redirect('/login')
     }else{
     
     const result=await User.findById(req.session.uid).populate('measure')
@@ -120,7 +120,7 @@ app.get('/:uid/:measureid',async (req,res)=>{
     if(!result){
         res.send('no data')
     }else{
-        if(result._id==req.params.uid&&req.session.uid==req.params.uid){
+        if(result._id==req.params.uid&&req.session.uid==req.params.uid||req.session.isAdmin){
             const measure=await Measure.findById(req.params.measureid)
             const user=await User.findById(req.params.uid)
             res.render('edit',{measure,user})
@@ -135,7 +135,7 @@ app.post('/:uid/:measureid',async (req,res)=>{
     if(!result){
         res.send('no data')
     }else{
-        if(result._id==req.params.uid&&req.session.uid==req.params.uid){
+        if(result._id==req.params.uid&&req.session.uid==req.params.uid||req.session.isAdmin){
             const measure=await Measure.findByIdAndUpdate(req.params.measureid,req.body)
             res.redirect(`/${req.params.uid}`)
         }else{

@@ -5,23 +5,61 @@ const ejs=require('ejs')
 const path=require('path')
 const mongoose=require('mongoose')
 const session=require('express-session')
-const dotenv=require('dotenv')
+const dotenv=require('dotenv').config()
+const helmet=require('helmet')
+const MongoDBStore = require('connect-mongodb-session')(session);
 
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/newtestbase';
+
+
+//app.use(helmet())
 app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use(session({secret:'notasecret'}))
 
 
-mongoose.connect('mongodb://localhost:27017/newtestbase', { useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify: false })
-    .then(() => {
-        console.log("MONGO CONNECTION OPEN!!!")
-    })
-    .catch(err => {
-        console.log("OH NO MONGO CONNECTION ERROR!!!!")
-        console.log(err)
-    })
+
+mongoose.connect(dbUrl, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+});
+
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error:"));
+db.once("open", () => {
+    console.log("Database connected");
+});
+
+
+const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
+
+const store = new MongoDBStore({
+    url: dbUrl,
+    secret,
+    touchAfter: 24 * 60 * 60
+});
+
+store.on("error", function (e) {
+    console.log("SESSION STORE ERROR", e)
+})
+
+const sessionConfig = {
+    store,
+    secret,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        // secure: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    }
+}
+
+app.use(session(sessionConfig));
 
 app.listen(3000)
 
@@ -35,9 +73,8 @@ app.get('/',(req,res)=>{
 })
 
 app.get('/login',(req,res)=>{
-    if(req.session.uid){
-        res.redirect(`/${req.session.uid}`)
-    }else{res.render('login')}
+    
+   res.render('login')
     
 })
 
@@ -49,7 +86,7 @@ app.post('/login',async (req,res)=>{
         res.redirect('/login')
     }else{
         req.session.uid=result._id
-        if(result.email=="tutrai.gergo01@gmail.com"){
+        if(result.email==process.env.ADMIN){
             req.session.isAdmin=true
             
             res.redirect('/admin')
@@ -67,10 +104,10 @@ app.get('/register',(req,res)=>{
 
 app.post('/register',async (req,res)=>{
     const {name,email,birth}=req.body
-
+    const emailResult=await User.findOne({email})
     const result=await User.findOne({name,email,birth})
     console.log(result)
-    if(!result){
+    if(!result&&!emailResult){
         
         const user=User({name,email,birth})
         user.save()
@@ -91,7 +128,7 @@ app.get('/admin',async (req,res)=>{
         res.redirect('/login')
     }else{
         admin=await User.findById(req.session.uid)
-        if(admin.email=='tutrai.gergo01@gmail.com'){
+        if(admin.email==process.env.ADMIN){
             req.session.isAdmin=true
             results=await User.find({})
             res.render('admin',{results})
@@ -131,7 +168,7 @@ app.post('/admin/:profile',async (req,res)=>{
 })
 
 app.get('/:uid',async (req,res)=>{
-    if(req.params.uid!==req.session.uid){
+    if(req.params.uid!=req.session.uid){
         res.redirect('/login')
     }else{
     

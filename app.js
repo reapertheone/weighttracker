@@ -39,7 +39,6 @@ const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
 
 const store = new MongoDBStore({
     url: dbUrl,
-    collection: 'sessions',
     secret,
     touchAfter: 24 * 60 * 60
 });

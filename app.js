@@ -9,7 +9,7 @@ const session=require('express-session')
 const helmet=require('helmet')
 const MongoDBStore = require('connect-mongodb-session')(session);
 
-const dbUrl = process.env.DB_URL ;
+const dbUrl = process.env.DB_URL;
 
 
 

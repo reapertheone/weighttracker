@@ -12,7 +12,8 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/newtestbase';
 
 
-//app.use(helmet())
+
+app.use(helmet())
 app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }));
 app.set('views', path.join(__dirname, 'views'));
@@ -49,7 +50,7 @@ store.on("error", function (e) {
 const sessionConfig = {
     store,
     secret,
-    resave: false,
+    resave: true,
     saveUninitialized: true,
     cookie: {
         httpOnly: true,

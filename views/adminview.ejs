@@ -104,17 +104,23 @@
            
     </table>
     <a class=" btn btn-primary" href=<%= `${result._id}/measures/new`%> >New measure</a>  <a class="btn btn-warning"  href=<%= `/${result._id}/${result.measure[result.measure.length-1]._id}`%>>Change last measure</a>
-    <br><br>
-    <form action=<%=`/admin/${result._id}`%> method="POST">
-        <label for="isClient">Do you want to mark as Client?</label>
-           <input type="checkbox" name="isClient" id="isClient" value="true">  <button class="btn btn-warning">Do it</button>
-    </form>
+   
         
         <% }else{ %>
         
                 <h2>No Data yet make a new measure</h2>
                 <a class=" btn btn-primary" href=<%= `/${result._id}/measures/new`%> >New measure</a>
             <% } %> 
+            <br><br>
+            <form action=<%=`/admin/${result._id}`%> method="POST">
+                <label for="isClient">Do you want to mark as Client?</label>
+                   <input type="checkbox" name="isClient" id="isClient" <%if(result.isClient){%>
+                   checked
+                   <% }else{ %> 
+
+                    <%}%>
+                   value="true">  <button class="btn btn-warning">Do it</button>
+            </form>
          
                 <script src="\js\asd\front.js"></script>
 </body>

@@ -7,7 +7,7 @@ const mongoose=require('mongoose')
 const session=require('express-session')
 const dotenv=require('dotenv').config()
 const helmet=require('helmet')
-const MongoDBStore = require('connect-mongodb-session')(session);
+const MongoDBStore = require('connect-mongo')(session);
 
 const dbUrl = process.env.DB_URL;
 

@@ -13,7 +13,7 @@ const dbUrl = process.env.DB_URL;
 
 
 
-app.use(helmet())
+//app.use(helmet())
 app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }));
 app.set('views', path.join(__dirname, 'views'));
@@ -39,6 +39,7 @@ const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
 
 const store = new MongoDBStore({
     url: dbUrl,
+    collection: 'sessions',
     secret,
     touchAfter: 24 * 60 * 60
 });
@@ -106,13 +107,13 @@ app.get('/register',(req,res)=>{
 })
 
 app.post('/register',async (req,res)=>{
-    const {name,email,birth}=req.body
+    const {name,email,birth,height}=req.body
     const emailResult=await User.findOne({email})
     const result=await User.findOne({name,email,birth})
     console.log(result)
     if(!result&&!emailResult){
         
-        const user=User({name,email,birth})
+        const user=User({name,email,birth,height})
         user.save()
         res.redirect('/login')
     }else{

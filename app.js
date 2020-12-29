@@ -62,7 +62,7 @@ const sessionConfig = {
 
 app.use(session(sessionConfig));
 
-app.listen(3000)
+app.listen(process.env.PORT)
 
 const Measure = require('./models/measure');
 const User = require('./models/user');

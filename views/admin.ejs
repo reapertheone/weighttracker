@@ -29,6 +29,16 @@
         </div>
       </nav> 
 
+      <form class="row g-3" method="post" action="/admins/all/search">
+        
+        <div class="col-auto">
+          <label for="inputPassword2" class="visually-hidden">Search</label>
+          <input type="text" class="form-control" id="search" name="search" placeholder="Type something">
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary mb-3">Search</button>
+        </div>
+      </form>
 <ul class="list-group">
     <% for( let person of results ) { %>
     <li class="list-group-item list-group-item-primary col"><a class="btn btn-primary" href=<%= `/admin/${person._id}` %>><%=`${person.name}`  %> </a> </br></li>

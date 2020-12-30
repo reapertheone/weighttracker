@@ -143,6 +143,13 @@ app.get('/admin',async (req,res)=>{
     }
 })
 
+app.post('/admins/all/search',async (req,res)=>{
+    if(req.session.isAdmin){ 
+        let results= await User.find({ name: new RegExp(req.body.search, "i") })
+        res.render('admin',{results})}
+    })
+ 
+
 app.get('/admin/clients',async (req,res)=>{
     if(req.session.isAdmin){
     results=await User.find({isClient:true})
@@ -232,6 +239,8 @@ app.post('/:uid/measures/new',async (req,res)=>{
         res.redirect('/login')
     }
 })
+
+
 
 
 

@@ -21,7 +21,7 @@
     <input class="form-control" type='email' name='email' id="email" placeholder='email' required><br>
 
     <label for="birth">Birth date:</label><br>
-    <input class="form-control" max=<%=`${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`%>  type='date' name='birth' id="birth" required><br></br>
+    <input class="form-control" max=<%=`${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`%>  type='date' name='birth' id="birth" required><br></br>
 
     <button class="btn btn-primary">Login</button>  <a class="btn btn-warning" href="/register">Register</a>
     </form>

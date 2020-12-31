@@ -9,40 +9,28 @@
     <script src="\js\asd\bootstrap.min.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-          <a class="navbar-brand" href=<%=`/admin`%>>Admin</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item nav-item-outline">
-                    <a class="nav-link nav-link-outline" href="/admin/clients">Clients</a>
-                  </li>
-              
-              <li class="nav-item nav-item-outline">
-                <a class="nav-link nav-link-outline" href="/logout">Logout</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav> 
-
-      <form class="row g-3" method="post" action="/admins/all/search">
-        
-        <div class="col-auto">
-          <label for="inputPassword2" class="visually-hidden">Search</label>
+    
+  <%-include('adminnav.ejs')%><br>
+<div class="container">
+      <form class="row pl-0" method="post" action="/admins/all/search">
+        <div class="col-2"></div>
+        <div class="col-6">
+          
           <input type="text" class="form-control" id="search" name="search" placeholder="Type something">
         </div>
-        <div class="col-auto">
-          <button type="submit" class="btn btn-primary mb-3">Search</button>
+        <div class="col-2">
+          <button type="submit" class="btn btn-primary ">Search</button>
         </div>
       </form>
-<ul class="list-group">
+    </div><br>
+<div class="container">
+  
     <% for( let person of results ) { %>
-    <li class="list-group-item list-group-item-primary col"><a class="btn btn-primary" href=<%= `/admin/${person._id}` %>><%=`${person.name}`  %> </a> </br></li>
+      <div class="row"><a class="btn btn-primary" href=<%= `/admin/${person._id}` %>><%=`${person.name}`  %> </a></div><br>
     <% } %>
-</ul>   
+   
+</div>
 </body>
 </html>
+
+

@@ -4,50 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%=`${user.name}-${measure.date.toLocaleDateString()}`%></title>
-    <link rel="stylesheet" href="\js\asd\bootstrap.min.css">
-    <link rel="stylesheet" href="\js\asd\style.css">
-    <script src="\js\asd\bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../js/asd/bootstrap.min.css">
+    <link rel="stylesheet" href="../js/asd/style.css">
+    <script src="../js/asd/bootstrap.min.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-          <a class="navbar-brand" href=<%=`/${result._id}`%>>Profile</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              
-              
-              <li class="nav-item nav-item-outline">
-                <a class="nav-link nav-link-outline" href="/logout">Logout</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>    
+<%- include('nav.ejs')%>
     
       <div class="container">
-        <div class="row-align-items-center">
-    <form action=<%=`/${user._id}/${measure._id}`%> method="POST">
-        <label for="weight">Weight</label><br>
-        <input type="number" max="300" step="0.01" name="weight" id="weight" value=<%=`${measure.weight}` %> required><label>kg</label><br>
-        <label for="waist">Waist diameter</label><br>
-        <input type="number" max="300" name="waist" step="0.01" id="waist" value=<%=`${measure.waist}`%> required><label>cm</label><br>
-        <label for="hip">Hip diameter</label><br>
-        <input type="number" max="300" name="hip" step="0.01" value=<%=`${measure.hip}`%> id="hip" required><label>cm</label><br>
-        <label for="chest">Chest diameter</label><br>
-        <input type="number" max="300" name="chest" step="0.01" value=<%=`${measure.chest}`%> id="chest" required><label>cm</label><br>
-        <label for="rightArm">Right arm diameter</label><br>
-        <input type="number" max="300" step="0.01" value=<%=`${measure.rightArm}`%> name="rightArm" id="rightArm" required><label>cm</label><br>
-        <label for="rightThigh">Right thigh diameter</label><br>
-        <input type="number" max="300" name="rightThigh" value=<%=`${measure.rightThigh}`%> step="0.01" id="rightThigh" required><label>cm</label><br>
-        <label for="leftArm">Left arm diameter</label><br>
-        <input type="number" max="300" step="0.01" name="leftArm" id="leftArm" value=<%=`${measure.leftArm}`%> required><label>cm</label><br>
-        <label for="leftThigh">Left thigh diameter</label><br>
-        <input type="number" max="300" step="0.01" name="leftThigh" id="leftThigh" value=<%=`${measure.leftThigh}`%> required><label>cm</label><br>
-    <br><button class="btn btn-primary">Submit</button>
-    </form>
-        </div></div>
+   <div class="row">
+      <div class="col-xs-0 col-m-4"></div>
+      <div class="col-xs-12 col-m-4">
+     <form action=<%=`/${user._id}/${measure._id}`%> method="POST">
+       <label for="weight">Weight</label><br>
+       <input class="input" type="number" max="300" step="0.01" name="weight" id="weight" value=<%=`${measure.weight}` %>
+         required><label>kg</label><br>
+       <label for="waist">Waist diameter</label><br>
+       <input type="number" max="300" name="waist" step="0.01" id="waist" value=<%=`${measure.waist}`%>
+         required><label>cm</label><br>
+       <label for="hip">Hip diameter</label><br>
+       <input type="number" max="300" name="hip" step="0.01" value=<%=`${measure.hip}`%> id="hip"
+         required><label>cm</label><br>
+       <label for="chest">Chest diameter</label><br>
+       <input type="number" max="300" name="chest" step="0.01" value=<%=`${measure.chest}`%> id="chest"
+         required><label>cm</label><br>
+       <label for="rightArm">Right arm diameter</label><br>
+       <input type="number" max="300" step="0.01" value=<%=`${measure.rightArm}`%> name="rightArm" id="rightArm"
+         required><label>cm</label><br>
+       <label for="rightThigh">Right thigh diameter</label><br>
+       <input type="number" max="300" name="rightThigh" value=<%=`${measure.rightThigh}`%> step="0.01" id="rightThigh"
+         required><label>cm</label><br>
+       <label for="leftArm">Left arm diameter</label><br>
+       <input type="number" max="300" step="0.01" name="leftArm" id="leftArm" value=<%=`${measure.leftArm}`%>
+         required><label>cm</label><br>
+       <label for="leftThigh">Left thigh diameter</label><br>
+       <input type="number" max="300" step="0.01" name="leftThigh" id="leftThigh" value=<%=`${measure.leftThigh}`%>
+         required><label>cm</label><br>
+       <br><button class="btn btn-primary">Submit</button>
+     </form>
+   </div>
+     <div class="col-sm-0 col-m-4"></div>
+   </div>
+ </div>
 </body>
 </html>

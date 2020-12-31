@@ -3,33 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= result.name %> </title>
+    <title><%= user.name %> </title>
     <link rel="stylesheet" href="\js\asd\bootstrap.min.css">
     <link rel="stylesheet" href="\js\asd\style.css">
     <script src="\js\asd\bootstrap.min.js"></script>
 </head>
 <body>
-   
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-          <a class="navbar-brand" href=<%=`/${result._id}`%>>Profile</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              
-              
-              <li class="nav-item nav-item-outline">
-                <a class="nav-link nav-link-outline" href="/logout">Logout</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>    
+  <%-include('nav.ejs')%> 
 
- <h1><%=`${result.name} - ${result.height} cm - ${result.birth.toLocaleDateString()}` %></h1>
-    <table class="table">
+
+
+
+  
+
+ 
+ <div class="table-resposive-sm">
+  
+    <table class="table text-center align-middle table-bordered ">
         <thead>
             <tr>
                 <td>Date</td>
@@ -49,7 +39,7 @@
         </thead>
 
             
-                <% for( let data of result.measure) { %>
+                <% for( let data of user.measure) { %>
                     <tr>
                         <td><%=data.date.toLocaleDateString('en-US')%></td>
                         
@@ -61,52 +51,65 @@
                         <td><%=data.rightThigh%> cm</td>
                         <td><%=data.leftArm%> cm</td>
                         <td><%=data.leftThigh%> cm</td>
-                        <td><a class="btn btn-warning" href=<%= `/${result._id}/${data._id}`%>>Change</a></td>
+                        <td><a class="btn btn-warning" href=<%= `/${user._id}/${data._id}`%>>Change</a></td>
                         
                     </tr>
                     
                     
                 <% } %>
         </table>
+        </div>
+        
 
-        <% if (result.measure.length>=2) { %>
-            <table class="table table-not">
-            <tfoot>
+        <% if (user.measure.length>=2) { %>
+          <div class="table-resposive-sm"> 
+            
+          <table class="table text-center align-middle table-bordered">
+            
                 <tr><td colspan="10">Progress Since Start</td></tr>
                 <tr>
-                    <td class="height"></td>
-                    <td class="weight"><%=result.measure[0].weight-result.measure[result.measure.length-1].weight %> kg</td>
-                    <td class="waist"><%=result.measure[0].waist-result.measure[result.measure.length-1].waist %> cm</td>
-                    <td class="hip"><%=result.measure[0].hip-result.measure[result.measure.length-1].hip %> cm</td>
-                    <td class="chest"><%=result.measure[0].chest-result.measure[result.measure.length-1].chest %> cm</td>
-                    <td class="rightArm"><%=result.measure[0].rightArm-result.measure[result.measure.length-1].rightArm %> cm</td>
-                    <td class="rightThigh"><%=result.measure[0].rightThigh-result.measure[result.measure.length-1].rightThigh %> cm</td>
-                    <td class="leftArm"><%=result.measure[0].leftArm-result.measure[result.measure.length-1].leftArm %> cm</td>
-                    <td class="leftThigh"><%=result.measure[0].leftThigh-result.measure[result.measure.length-1].leftThigh %> cm</td><td></td>
+                    <td></td>
+                    <td><%=user.measure[0].weight-user.measure[user.measure.length-1].weight %> kg</td>
+                    <td><%=user.measure[0].waist-user.measure[user.measure.length-1].waist %> cm</td>
+                    <td><%=user.measure[0].hip-user.measure[user.measure.length-1].hip %> cm</td>
+                    <td><%=user.measure[0].chest-user.measure[user.measure.length-1].chest %> cm</td>
+                    <td><%=user.measure[0].rightArm-user.measure[user.measure.length-1].rightArm %> cm</td>
+                    <td><%=user.measure[0].rightThigh-user.measure[user.measure.length-1].rightThigh %> cm</td>
+                    <td><%=user.measure[0].leftArm-user.measure[user.measure.length-1].leftArm %> cm</td>
+                    <td><%=user.measure[0].leftThigh-user.measure[user.measure.length-1].leftThigh %> cm</td><td></td>
                 </tr>
                 
 
                 <tr><td colspan="10">Progress since last measure</td></tr>
                 <tr>
                     <td></td>
-                    <td><%=result.measure[result.measure.length-2].weight-result.measure[result.measure.length-1].weight %> kg</td>
-                    <td><%=result.measure[result.measure.length-2].waist-result.measure[result.measure.length-1].waist %> cm</td>
-                    <td><%=result.measure[result.measure.length-2].hip-result.measure[result.measure.length-1].hip %> cm</td>
-                    <td><%=result.measure[result.measure.length-2].chest-result.measure[result.measure.length-1].chest %> cm</td>
-                    <td><%=result.measure[result.measure.length-2].rightArm-result.measure[result.measure.length-1].rightArm %> cm</td>
-                    <td><%=result.measure[result.measure.length-2].rightThigh-result.measure[result.measure.length-1].rightThigh %> cm</td>
-                    <td><%=result.measure[result.measure.length-2].leftArm-result.measure[result.measure.length-1].leftArm %> cm</td>
-                    <td><%=result.measure[result.measure.length-2].leftThigh-result.measure[result.measure.length-1].leftThigh %> cm</td>
+                    <td><%=user.measure[user.measure.length-2].weight-user.measure[user.measure.length-1].weight %> kg</td>
+                    <td><%=user.measure[user.measure.length-2].waist-user.measure[user.measure.length-1].waist %> cm</td>
+                    <td><%=user.measure[user.measure.length-2].hip-user.measure[user.measure.length-1].hip %> cm</td>
+                    <td><%=user.measure[user.measure.length-2].chest-user.measure[user.measure.length-1].chest %> cm</td>
+                    <td><%=user.measure[user.measure.length-2].rightArm-user.measure[user.measure.length-1].rightArm %> cm</td>
+                    <td><%=user.measure[user.measure.length-2].rightThigh-user.measure[user.measure.length-1].rightThigh %> cm</td>
+                    <td><%=user.measure[user.measure.length-2].leftArm-user.measure[user.measure.length-1].leftArm %> cm</td>
+                    <td><%=user.measure[user.measure.length-2].leftThigh-user.measure[user.measure.length-1].leftThigh %> cm</td>
                     <td></td>
                 </tr>
            
     </table>
-    <a class=" btn btn-primary" href=<%= `${result._id}/measures/new`%> >New measure</a>  <a class="btn btn-warning"  href=<%= `/${result._id}/${result.measure[result.measure.length-1]._id}`%>>Change last measure</a>
-        
+  </div>
+  <div class="col-1"></div>
+  </div>
+</div>
+<div class="container">
+<div class="row">
+  <a class=" btn btn-primary text-center align-middle" href=<%= `${user._id}/measures/new`%> >New measure</a>  
+</div>
+<br>
+<div class="row"><a class="btn btn-warning "  href=<%= `/${user._id}/${user.measure[user.measure.length-1]._id}`%>>Change last measure</a></div>
+</div>
         <% }else{ %>
         
                 <h2>No Data yet make a new measure</h2>
-                <a class=" btn btn-primary" href=<%= `/${result._id}/measures/new`%> >New measure</a>
+                <a class=" btn btn-primary text-center " href=<%= `/${user._id}/measures/new`%> >New measure</a>
             <% } %> 
          
                 <script src="\js\asd\front.js"></script>

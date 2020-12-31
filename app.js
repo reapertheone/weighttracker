@@ -1,15 +1,15 @@
-const express=require('express')
-const app=express()
-const BP=require('body-parser')
-const ejs=require('ejs')
-const path=require('path')
-const mongoose=require('mongoose')
-const session=require('express-session')
-const dotenv=require('dotenv').config()
-const helmet=require('helmet')
+const express = require('express')
+const app = express()
+const BP = require('body-parser')
+const ejs = require('ejs')
+const path = require('path')
+const mongoose = require('mongoose')
+const session = require('express-session')
+const dotenv = require('dotenv').config()
+const helmet = require('helmet')
 const MongoDBStore = require('connect-mongo')(session);
 
-const dbUrl = process.env.DB_URL;
+const dbUrl = "process.env.DB_URL";
 
 
 
@@ -61,7 +61,7 @@ const sessionConfig = {
 }
 
 app.use(session(sessionConfig));
-const port=process.env.PORT|| 3000
+const port = process.env.PORT || 3000
 app.listen(port)
 
 const Measure = require('./models/measure');
@@ -69,173 +69,177 @@ const User = require('./models/user');
 
 
 
-app.get('/',(req,res)=>{
+app.get('/', (req, res) => {
     res.redirect('/login')
 })
 
-app.get('/login',(req,res)=>{
-    
-   res.render('login')
-    
+app.get('/login', (req, res) => {
+
+    res.render('login')
+
 })
 
-app.post('/login',async (req,res)=>{
-    const {name,email,birth}=req.body
-    const result=await User.findOne({name,email,birth}).catch((err)=>{
+app.post('/login', async (req, res) => {
+    const { name, email, birth } = req.body
+    const result = await User.findOne({ name, email, birth }).catch((err) => {
         throw err
     })
 
-    if(!result){
+    if (!result) {
         res.redirect('/login')
-    }else{
-        req.session.uid=result._id
-        if(result.email==process.env.ADMIN){
-            req.session.isAdmin=true
-            
+    } else {
+        req.session.uid = result._id
+        if (result.email == process.env.ADMIN) {
+            req.session.isAdmin = true
+
             res.redirect('/admin')
-        }else if(!req.session.isAdmin&&req.session.uid){
+        } else if (!req.session.isAdmin && req.session.uid) {
             res.redirect(`/${req.session.uid}`)
-        }else{
+        } else {
             res.redirect('/login')
         }
     }
 })
 
-app.get('/register',(req,res)=>{
+app.get('/register', (req, res) => {
     res.render('register')
 })
 
-app.post('/register',async (req,res)=>{
-    const {name,email,birth,height}=req.body
-    const emailResult=await User.findOne({email})
-    const result=await User.findOne({name,email,birth})
+app.post('/register', async (req, res) => {
+    const { name, email, birth, height } = req.body
+    const emailResult = await User.findOne({ email })
+    const result = await User.findOne({ name, email, birth })
     console.log(result)
-    if(!result&&!emailResult){
-        
-        const user=User({name,email,birth,height})
+    if (!result && !emailResult) {
+
+        const user = User({ name, email, birth, height })
         user.save()
         res.redirect('/login')
-    }else{
+    } else {
         res.render('register')
     }
 })
 
-app.get('/logout',(req,res)=>{
-    req.session.uid=null
-    req.session.isAdmin=null
+app.get('/logout', (req, res) => {
+    req.session.uid = null
+    req.session.isAdmin = null
     res.redirect('/login')
 })
 
-app.get('/admin',async (req,res)=>{
-    if(!req.session.uid){
+app.get('/admin', async (req, res) => {
+    if (!req.session.uid) {
         res.redirect('/login')
-    }else{
-        admin=await User.findById(req.session.uid)
-        if(admin.email==process.env.ADMIN){
-            req.session.isAdmin=true
-            results=await User.find({})
-            res.render('admin',{results})
-        }else{
-           res.redirect('/login')
+    } else {
+        admin = await User.findById(req.session.uid)
+        if (admin.email == process.env.ADMIN) {
+            req.session.isAdmin = true
+            results = await User.find({})
+            res.render('admin', { results })
+        } else {
+            res.redirect('/login')
         }
-    
+
 
     }
 })
 
-app.post('/admins/all/search',async (req,res)=>{
-    if(req.session.isAdmin){ 
-        let results= await User.find({ name: new RegExp(req.body.search, "i") })
-        res.render('admin',{results})}
-    })
- 
-
-app.get('/admin/clients',async (req,res)=>{
-    if(req.session.isAdmin){
-    results=await User.find({isClient:true})
-    res.render('admin',results)}else{res.redirect('/login')}
+app.post('/admins/all/search', async (req, res) => {
+    if (req.session.isAdmin) {
+        let results = await User.find({ name: new RegExp(req.body.search, "i") })
+        res.render('admin', { results })
+    }
 })
 
-app.get('/admin/:profile',async (req,res)=>{
-    if(req.session.isAdmin){
-        const userid=req.params.profile
-        const result= await User.findById(userid).populate('measure')
-        res.render('adminview',{result})
-    }else{
+
+app.get('/admin/clients', async (req, res) => {
+    if (req.session.isAdmin) {
+        results = await User.find({ isClient: true })
+        res.render('admin', results)
+    } else { res.redirect('/login') }
+})
+
+app.get('/admin/:profile', async (req, res) => {
+    if (req.session.isAdmin) {
+        const userid = req.params.profile
+        const user = await User.findById(userid).populate('measure')
+        res.render('adminview', { user })
+    } else {
         res.redirect('/login')
     }
 })
 
 
-app.post('/admin/:profile',async (req,res)=>{
-    if(req.session.isAdmin){
-        if(req.body.isClient){await User.findByIdAndUpdate(req.params.profile,{isClient:true})}else{await User.findByIdAndUpdate(req.params.profile,{isClient:false})}
-        
+app.post('/admin/:profile', async (req, res) => {
+    if (req.session.isAdmin) {
+        if (req.body.isClient) { await User.findByIdAndUpdate(req.params.profile, { isClient: true }) } else { await User.findByIdAndUpdate(req.params.profile, { isClient: false }) }
+
         res.redirect(`/admin/${req.params.profile}`)
-    }else{
+    } else {
         res.redirect('/login')
     }
 })
 
-app.get('/:uid',async (req,res)=>{
-    if(req.params.uid!=req.session.uid){
+app.get('/:uid', async (req, res) => {
+    if (req.params.uid != req.session.uid) {
         res.redirect('/login')
-    }else{
-    
-    const result=await User.findById(req.session.uid).populate('measure')
-    
-    res.render('profile',{result})
+    } else {
+
+        const user = await User.findById(req.session.uid).populate('measure')
+
+        res.render('profile', { user })
     }
 })
 
-app.get('/:uid/:measureid',async (req,res)=>{
-    result=await User.findOne({measure:req.params.measureid})
-    if(!result){
+app.get('/:uid/:measureid', async (req, res) => {
+    result = await User.findOne({ measure: req.params.measureid })
+    if (!result) {
         res.send('no data')
-    }else{
-        if(result._id==req.params.uid&&req.session.uid==req.params.uid||req.session.isAdmin){
-            const measure=await Measure.findById(req.params.measureid)
-            const user=await User.findById(req.params.uid)
-            res.render('edit',{measure,user})
-        }else{
+    } else {
+        if (result._id == req.params.uid && req.session.uid == req.params.uid || req.session.isAdmin) {
+            const measure = await Measure.findById(req.params.measureid)
+            const user = await User.findById(req.params.uid)
+            res.render('edit', { measure, user })
+        } else {
             res.send('something went wrong')
         }
     }
 })
 
-app.post('/:uid/:measureid',async (req,res)=>{
-    result=await User.findOne({measure:req.params.measureid})
-    if(!result){
+app.post('/:uid/:measureid', async (req, res) => {
+    result = await User.findOne({ measure: req.params.measureid })
+    if (!result) {
         res.send('no data')
-    }else{
-        if(result._id==req.params.uid&&req.session.uid==req.params.uid||req.session.isAdmin){
-            const measure=await Measure.findByIdAndUpdate(req.params.measureid,req.body)
+    } else {
+        if (result._id == req.params.uid && req.session.uid == req.params.uid || req.session.isAdmin) {
+            const measure = await Measure.findByIdAndUpdate(req.params.measureid, req.body)
             res.redirect(`/${req.params.uid}`)
-        }else{
+        } else {
             res.send('something went wrong')
         }
     }
 })
 
 
-app.get('/:uid/measures/new',async (req,res)=>{
-    if(!req.session.uid){res.send('Smth went wrong')}else{
+app.get('/:uid/measures/new', async (req, res) => {
+    if (!req.session.uid) { res.send('Smth went wrong') } else {
 
-    const user=await User.findById(req.session.uid)
+        const user = await User.findById(req.session.uid)
 
 
-    res.render('new',{user})}
+        res.render('new', { user })
+    }
 })
 
-app.post('/:uid/measures/new',async (req,res)=>{
-    if(req.session.uid){
-    const {height,weight,waist,hip,chest,rightArm,rightThigh,leftArm,leftThigh}=req.body
-    const user=await User.findById(req.params.uid)
-    const measures=Measure({weight:weight,waist:waist,hip:hip,chest:chest,rightArm:rightArm,rightThigh:rightThigh,leftArm:leftArm,leftThigh:leftThigh})
-    await measures.save()
-    user.measure.push(measures)
-    await user.save()
-    res.redirect(`/${req.session.uid}`)}else{
+app.post('/:uid/measures/new', async (req, res) => {
+    if (req.session.uid) {
+        const { height, weight, waist, hip, chest, rightArm, rightThigh, leftArm, leftThigh } = req.body
+        const user = await User.findById(req.params.uid)
+        const measures = Measure({ weight: weight, waist: waist, hip: hip, chest: chest, rightArm: rightArm, rightThigh: rightThigh, leftArm: leftArm, leftThigh: leftThigh })
+        await measures.save()
+        user.measure.push(measures)
+        await user.save()
+        res.redirect(`/${req.session.uid}`)
+    } else {
         res.redirect('/login')
     }
 })

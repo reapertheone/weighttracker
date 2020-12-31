@@ -28,3 +28,17 @@ td:last-child{
 thead>tr{background: royalblue;color:white;}
 
 
+body{
+    background-color: grey;
+}
+
+form{
+    background-color: white;
+    padding:10px;
+    border-radius:25px;
+    color:black;
+}
+
+table{
+    background-color: white;
+}

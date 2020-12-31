@@ -9,7 +9,7 @@ const dotenv = require('dotenv').config()
 const helmet = require('helmet')
 const MongoDBStore = require('connect-mongo')(session);
 
-const dbUrl = "process.env.DB_URL";
+const dbUrl = process.env.DB_URL;
 
 
 

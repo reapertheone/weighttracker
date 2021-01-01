@@ -20,7 +20,7 @@
         <%if(user.measure.length>=1){%>
         <a class="btn btn-warning mt-2"  href=<%= `/${user._id}/${user.measure[user.measure.length-1]._id}`%>>Change last measure</a>
         <%}%>
-        <form class="mt-2" action=<%=`/admin/${user._id}`%> method="POST">
+        <form class="mt-2 rounded" action=<%=`/admin/${user._id}`%> method="POST">
             <label for="isClient">Do you want to mark as Client?</label>
                <input type="checkbox" name="isClient" id="isClient" <%if(user.isClient){%>
                checked

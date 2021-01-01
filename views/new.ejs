@@ -9,7 +9,11 @@
     <script src="\js\asd\bootstrap.min.js"></script>
 </head>
 <body>
+    <%if(isAdmin){%>
+        <%-include('adminnav.ejs')%>
+    <%}else{%>    
     <%-include('nav.ejs')%> 
+    <%}%>
 
     <div class="container">
     <div class="row-align-items-center">

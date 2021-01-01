@@ -29,7 +29,7 @@ thead>tr{background: royalblue;color:white;}
 
 
 body{
-    background-color: grey;
+    background-color:rgba(0, 0, 0, 0.705);
 }
 
 form{
@@ -42,3 +42,12 @@ form{
 table{
     background-color: white;
 }
+
+.heading-0{
+    color:white;
+}
+
+.heading-1{
+    color:white;
+}
+

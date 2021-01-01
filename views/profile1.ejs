@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= user.name %> </title>
+    <link rel="stylesheet" href="\js\asd\bootstrap.min.css">
+    <link rel="stylesheet" href="\js\asd\style.css">
+    <script src="\js\asd\bootstrap.min.js"></script>
+</head>
+<body>
+<%-include('nav.ejs')%> 
+<div class="container text-center">
+    <h1 class="heading-1"><%=`${user.name}-${user.height} cm - ${user.birth.toLocaleDateString('en-GB')}`%></h1>
+    <hr>
+    <h1 class="heading-1">Controls</h1>
+    <hr>
+    <div class="row">
+        <a class=" btn btn-primary text-center align-middle mt-2" href=<%= `${user._id}/measures/new`%> >New measure</a>
+        <%if(user.measure.length>=1){%>
+        <a class="btn btn-warning mt-2"  href=<%= `/${user._id}/${user.measure[user.measure.length-1]._id}`%>>Change last measure</a>
+    <%}%>
+    </div>
+</div>
+<%if(user.measure.length>=2){%>
+<div class="container">
+   <div class="row"> <h1 class="heading-0 text-center">Progress</h1>
+    <hr></div> 
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-m-6 col-lg-4 mt-5"><div class="card bg-primary">
+            <h5 class="card-header">Progress since start</h5>
+            <div class="card-body rounded">
+                <ul class="list-group list-group-flush rounded">
+                    <li class="list-group-item text-justify">Weight: <%=user.measure[0].weight-user.measure[user.measure.length-1].weight %> kg</li>
+                    <li class="list-group-item text-justify">Waist: <%=user.measure[0].waist-user.measure[user.measure.length-1].waist %> cm</li>
+                    <li class="list-group-item text-justify">Hip: <%=user.measure[0].hip-user.measure[user.measure.length-1].hip %> cm</li>
+                    <li class="list-group-item text-justify">Chest: <%=user.measure[0].chest-user.measure[user.measure.length-1].chest %> cm</li>
+                    <li class="list-group-item text-justify">Right Arm: <%=user.measure[0].rightArm-user.measure[user.measure.length-1].rightArm %> cm</li>
+                    <li class="list-group-item text-justify">Right Thigh: <%=user.measure[0].rightThigh-user.measure[user.measure.length-1].rightThigh %> cm</li>
+                    <li class="list-group-item text-justify">Left Arm: <%=user.measure[0].leftArm-user.measure[user.measure.length-1].leftArm %> cm</li>
+                    <li class="list-group-item text-justify">Left Thigh: <%=user.measure[0].leftThigh-user.measure[user.measure.length-1].leftThigh %> cm</li>
+
+                </ul>
+            </div>
+        </div></div>
+        <div class="col-xs-12 col-sm-12 col-m-4 col-lg-4">
+           
+        </div>
+        <div class="col-xs-12 col-sm-12 col-m-6 col-lg-4 mt-5">
+            <div class="card bg-primary">
+                <h5 class="card-header">Progress since 1st measure</h5>
+                <div class="card-body rounded">
+                    <ul class="list-group list-group-flush rounded">
+                        <li class="list-group-item text-justify">Weight: <%=user.measure[user.measure.length-2].weight-user.measure[user.measure.length-1].weight %> kg</li>
+                        <li class="list-group-item text-justify">Waist: <%=user.measure[user.measure.length-2].waist-user.measure[user.measure.length-1].waist %> cm</li>
+                        <li class="list-group-item text-justify">Hip: <%=user.measure[user.measure.length-2].hip-user.measure[user.measure.length-1].hip %> cm</li>
+                        <li class="list-group-item text-justify">Chest: <%=user.measure[user.measure.length-2].chest-user.measure[user.measure.length-1].chest %> cm</li>
+                        <li class="list-group-item text-justify">Right Arm: <%=user.measure[user.measure.length-2].rightArm-user.measure[user.measure.length-1].rightArm %> cm</li>
+                        <li class="list-group-item text-justify">Right Thigh: <%=user.measure[user.measure.length-2].rightThigh-user.measure[user.measure.length-1].rightThigh %> cm</li>
+                        <li class="list-group-item text-justify">Left Arm: <%=user.measure[user.measure.length-2].leftArm-user.measure[user.measure.length-1].leftArm %> cm</li>
+                        <li class="list-group-item text-justify">Left Thigh: <%=user.measure[user.measure.length-2].leftThigh-user.measure[user.measure.length-1].leftThigh %> cm</li>
+    
+                    </ul>
+                </div>
+            </div></div>
+        </div>
+    </div>
+   
+</div>
+<%}%>
+
+<div class="container">
+    
+    <h1 class="heading-0 text-center">Measures</h1>
+    <hr>
+</div>
+<% for( let data of user.measure.reverse()) { %>
+<div class="container mt-4">
+    
+    <div class="row">
+        <div class="col-xs-0 col-sm-2 col-lg-4"></div>
+        <div class="col-xs-12 col-sm-8 col-lg-4">
+            <div class="card bg-primary">
+                <h5 class="card-header"><%=data.date.toLocaleDateString('en-GB')%></h5>
+                <div class="card-body rounded">
+                    <ul class="list-group list-group-flush rounded">
+                         <li class="list-group-item text-justify">Weight: <%=data.weight%> kg </li>
+                         <li class="list-group-item text-justify">Waist: <%=data.waist%> cm </li>
+                         <li class="list-group-item text-justify">Hip: <%=data.hip%> cm </li>
+                         <li class="list-group-item text-justify">Chest: <%=data.chest%> cm </li>
+                         <li class="list-group-item text-justify">Right Arm: <%=data.rightArm%> cm </li>
+                         <li class="list-group-item text-justify">Right Thigh: <%=data.rightThigh%> cm </li>
+                         <li class="list-group-item text-justify">Left Arm: <%=data.leftArm%> cm </li>
+                         <li class="list-group-item text-justify">Left Thigh: <%=data.leftThigh%> cm </li>
+                      </ul>
+                    <a class="btn btn-warning mt-2" href=<%= `/${user._id}/${data._id}`%>>Change</a>
+                </div>
+              </div>
+        </div>
+        <div class="col-xs-0 col-sm-2 col-lg-4"></div>
+    </div>
+</div>
+
+<%}%>
+
+
+
+
+
+  
+
+ 
+ 
+<script src="\js\asd\front.js"></script>
+</body>
+</html>
+

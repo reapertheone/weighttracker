@@ -158,11 +158,38 @@ app.get('/admin/clients', async (req, res) => {
     } else { res.redirect('/login') }
 })
 
+
+app.get('/admin/:uid/measures/new', async (req, res) => {
+    if (!req.session.uid) { res.send('Smth went wrong') } else {
+        isAdmin=req.session.isAdmin
+        const user = await User.findById(req.session.uid)
+
+
+        res.render('new', { user,isAdmin })
+    }
+})
+
+app.post('/admin/:uid/measures/new', async (req, res) => {
+    if (req.session.isAdmin) {
+        const { height, weight, waist, hip, chest, rightArm, rightThigh, leftArm, leftThigh } = req.body
+        const user = await User.findById(req.params.uid)
+        const measures = Measure({ weight: weight, waist: waist, hip: hip, chest: chest, rightArm: rightArm, rightThigh: rightThigh, leftArm: leftArm, leftThigh: leftThigh })
+        await measures.save()
+        user.measure.push(measures)
+        await user.save()
+        res.redirect(`/admin/${req.session.uid}`)
+    } else {
+        res.redirect('/login')
+    }
+})
+
 app.get('/admin/:profile', async (req, res) => {
     if (req.session.isAdmin) {
         const userid = req.params.profile
         const user = await User.findById(userid).populate('measure')
-        res.render('adminview', { user })
+        res.render('newadminview', { user })
+        //res.send({user,userid})
+        
     } else {
         res.redirect('/login')
     }
@@ -186,7 +213,7 @@ app.get('/:uid', async (req, res) => {
 
         const user = await User.findById(req.session.uid).populate('measure')
 
-        res.render('profile', { user })
+        res.render('profile1', { user })
     }
 })
 
@@ -198,7 +225,11 @@ app.get('/:uid/:measureid', async (req, res) => {
         if (result._id == req.params.uid && req.session.uid == req.params.uid || req.session.isAdmin) {
             const measure = await Measure.findById(req.params.measureid)
             const user = await User.findById(req.params.uid)
-            res.render('edit', { measure, user })
+            if(req.session.isAdmin){
+
+                res.render('adminedit', { measure, user })
+            }else{res.render('edit', { measure, user })}
+
         } else {
             res.send('something went wrong')
         }
@@ -210,10 +241,14 @@ app.post('/:uid/:measureid', async (req, res) => {
     if (!result) {
         res.send('no data')
     } else {
-        if (result._id == req.params.uid && req.session.uid == req.params.uid || req.session.isAdmin) {
+        if (result._id == req.params.uid && req.session.uid == req.params.uid) {
             const measure = await Measure.findByIdAndUpdate(req.params.measureid, req.body)
             res.redirect(`/${req.params.uid}`)
-        } else {
+        }else if(req.session.isAdmin){
+            res.redirect(`/admin/${req.params.uid}`)
+        } 
+        
+        else {
             res.send('something went wrong')
         }
     }
@@ -222,11 +257,11 @@ app.post('/:uid/:measureid', async (req, res) => {
 
 app.get('/:uid/measures/new', async (req, res) => {
     if (!req.session.uid) { res.send('Smth went wrong') } else {
-
+        const isAdmin=req.session.isAdmin
         const user = await User.findById(req.session.uid)
 
 
-        res.render('new', { user })
+        res.render('new', { user,isAdmin })
     }
 })
 

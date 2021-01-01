@@ -13,7 +13,7 @@ const dbUrl = process.env.DB_URL;
 
 
 
-//app.use(helmet())
+app.use(helmet())
 app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }));
 app.set('views', path.join(__dirname, 'views'));

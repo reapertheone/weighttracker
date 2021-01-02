@@ -87,6 +87,7 @@ app.get('/login', (req, res) => {
 })
 
 app.post('/login', async (req, res) => {
+    req.session.message=false
     const { name, email, birth } = req.body
     const result = await User.findOne({ name, email, birth }).catch((err) => {
         throw err

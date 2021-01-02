@@ -23,10 +23,11 @@
 
     <label for="birth">Birth date:</label><br>
     <input class="form-control" max=<%=`${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`%> type='date' name='birth' id="birth" required><br>
-
-    <label for="height">Height:</label><br>
-    <input class="form-control" type="number" max="300" step="0.01" placeholder="height in cm" name="height"required><label for=height>cm</label><br>
-
+    <div class="row">
+        <div class="col-10">
+            <label for="height">Height:</label><br>
+            <input class="form-control" type="number" max="300" step="0.01" placeholder="height in cm" name="height"required></div><div class="col-2 ml-0"><label class="mt-4" for=height>cm</label></div><br>
+    </div>
 
     
 

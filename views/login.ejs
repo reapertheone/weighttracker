@@ -10,13 +10,20 @@
 </head>
 <body>
 
+    
+
     <% let date=new Date()%>
     <h1 class="heading-1 text-center">LOGIN</h1>
+    
     <div class="container">
         <div class="row">
         <div class="col-xs-0 col-sm-0 col-m-4 col-lg-4"></div>
             <div class="col-xs-12 col-sm-12 col-m-4 col-lg-4 text-center">
+                
                 <form action="/login"method="post">
+                    <%if(message){%>
+                        <h5 class="message display-0 text-center bg-success rounded mt-2 mb-2 pt-2 pb-2"><%=message%></h1>
+                    <%}%>
                     <label for="name">Full name:</label><br>
                     <input  class="form-control" type='text' name='name' id="name" placeholder='Full name' required><br>
 
@@ -26,7 +33,7 @@
                     <label for="birth">Birth date:</label><br>
                     <input class="form-control" max=<%=`${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`%> placeholder=<%=`${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`%> type='date' name='birth' id="birth" required><br></br>
 
-                    <button class="btn btn-primary">Login</button><br><br>  <a class="btn btn-warning" href="/register">Register</a>
+                    <button class="btn btn-primary ">Login</button><br><br>  <a class="btn btn-warning" href="/register">Register</a>
                 </form>
                 
             </div>
@@ -34,7 +41,7 @@
         </div>
     </div>
 
-    <script src="/js/asd/front.js"></script>
+    <script src="../js/asd/front.js"></script>
 </body>
 </html>
 

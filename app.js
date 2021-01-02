@@ -70,12 +70,19 @@ const User = require('./models/user');
 
 
 app.get('/', (req, res) => {
+    req.session.message=false
     res.redirect('/login')
 })
 
 app.get('/login', (req, res) => {
+    if(req.session.message){
+    const message=req.session.message
+    res.render('login',{message})
+    }else{
+        const message=req.session.message
 
-    res.render('login')
+        res.render('login',{message})   
+    }
 
 })
 
@@ -94,6 +101,7 @@ app.post('/login', async (req, res) => {
 
             res.redirect('/admin')
         } else if (!req.session.isAdmin && req.session.uid) {
+            
             res.redirect(`/${req.session.uid}`)
         } else {
             res.redirect('/login')
@@ -114,8 +122,10 @@ app.post('/register', async (req, res) => {
 
         const user = User({ name, email, birth, height })
         user.save()
+        req.session.message='Succes! You can log in now'
         res.redirect('/login')
     } else {
+        
         res.render('register')
     }
 })

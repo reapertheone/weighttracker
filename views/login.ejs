@@ -21,8 +21,8 @@
             <div class="col-xs-12 col-sm-12 col-m-4 col-lg-4 text-center">
                 
                 <form action="/login"method="post">
-                    <%if(message){%>
-                        <h5 class="message display-0 text-center bg-success rounded mt-2 mb-2 pt-2 pb-2"><%=message%></h1>
+                    <%if(message.body || message.status){%>
+                        <h5 class="message  display-0 text-center <%=`bg-${message.status}`%> rounded mt-2 mb-2 pt-2 pb-2"><%=message.body%></h1>
                     <%}%>
                     <label for="name">Full name:</label><br>
                     <input  class="form-control" type='text' name='name' id="name" placeholder='Full name' required><br>

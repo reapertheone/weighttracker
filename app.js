@@ -5,11 +5,12 @@ const ejs = require('ejs')
 const path = require('path')
 const mongoose = require('mongoose')
 const session = require('express-session')
-const dotenv = require('dotenv').config()
+
 const helmet = require('helmet')
 const MongoDBStore = require('connect-mongo')(session);
 
-const dbUrl = process.env.DB_URL;
+const dbUrl = process.env.DB_URL||"mongodb://localhost:27017/newtestbase";
+
 
 
 
@@ -69,9 +70,13 @@ const User = require('./models/user');
 
 
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
+    const result=await User.findOne({})
+    if(!result){
+        res.render('register')
+    }else{
     req.session.message=false
-    res.redirect('/login')
+    res.redirect('/login')}
 })
 
 app.get('/login', (req, res) => {
@@ -98,16 +103,13 @@ app.post('/login', async (req, res) => {
     if (!result) {
         res.redirect('/login')
     } else {
-        req.session.uid = result._id
-        if (result.email == process.env.ADMIN) {
-            req.session.isAdmin = true
+        req.session.isAdmin=result.isAdmin
+        req.session.uid=result._id
 
+        if(req.session.isAdmin){
             res.redirect('/admin')
-        } else if (!req.session.isAdmin && req.session.uid) {
-            req.session.isAdmin=false
-            res.redirect(`/${req.session.uid}`)
-        } else {
-            res.redirect('/login')
+        }else{
+            res.redirect(`/${result._id}`)
         }
     }
 })
@@ -118,19 +120,26 @@ app.get('/register', (req, res) => {
 
 app.post('/register', async (req, res) => {
     const { name, email, birth, height } = req.body
+    const firstUser=await User.findOne({})
     const emailResult = await User.findOne({ email })
     const result = await User.findOne({ name, email, birth })
-    console.log(result)
-    if (!result && !emailResult) {
-
-        const user = User({ name, email, birth, height })
+    console.log(emailResult)
+    if(!firstUser){
+        const user = User({ name, email, birth, height,isAdmin:true })
         user.save()
-        req.session.message='Succes! You can log in now'
-        res.redirect('/login')
-    } else {
-        
-        res.render('register')
-    }
+    }else{
+        if (!result && !emailResult) {
+
+             const user = User({ name, email, birth, height })
+             user.save()
+             req.session.message={body:"Succes! You can log in now",status:"success"}
+             
+             res.redirect('/login')
+        } else {
+            req.session.message={body:"Email or User is already registered",status:"danger"}
+            
+             res.redirect('/login')
+    }}
 })
 
 app.get('/logout', (req, res) => {

@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
         type:Number,
         default:null
     },
+    isAdmin:{
+        type:Boolean,
+        default:false,
+    },
     measure: [
         {
             type: Schema.Types.ObjectId,

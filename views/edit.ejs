@@ -40,6 +40,8 @@
        <label for="leftThigh">Left thigh diameter</label><br>
        <input type="number" max="300" step="0.01" name="leftThigh" id="leftThigh" value=<%=`${measure.leftThigh}`%>
          required><label>cm</label><br>
+         <label for="comment">Comment</label><br>
+        <textarea name="comment" id="comment" rows="3" cols="50" spaceholder="Comment Text"><%=measure.comment%></textarea>
        <br><button class="btn btn-primary">Submit</button>
      </form>
    </div>

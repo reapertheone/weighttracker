@@ -39,9 +39,10 @@ const measureSchema = new mongoose.Schema({
         type:Number,
         required:true
     },
-    userID: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
+    comment:{
+        type:String,
+        default:'No Comment',
+        
     }
 })
 

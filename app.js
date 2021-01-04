@@ -182,9 +182,9 @@ app.get('/admin/:uid/measures/new', async (req, res) => {
 
 app.post('/admin/:uid/measures/new', async (req, res) => {
     if (req.session.isAdmin) {
-        const {weight, waist, hip, chest, rightArm, rightThigh, leftArm, leftThigh } = req.body
+        const {weight, waist, hip, chest, rightArm, rightThigh, leftArm, leftThigh, comment} = req.body
         const user = await User.findById(req.params.uid)
-        const measures = Measure({ weight: weight, waist: waist, hip: hip, chest: chest, rightArm: rightArm, rightThigh: rightThigh, leftArm: leftArm, leftThigh: leftThigh })
+        const measures = Measure({ weight: weight, waist: waist, hip: hip, chest: chest, rightArm: rightArm, rightThigh: rightThigh, leftArm: leftArm, leftThigh: leftThigh,comment:comment})
         await measures.save()
         user.measure.push(measures)
         await user.save()

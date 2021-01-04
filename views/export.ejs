@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export</title>
+    <link rel="stylesheet" href="\js\asd\bootstrap.min.css">
+    <link rel="stylesheet" href="\js\asd\style.css">
+    <script src="\js\asd\bootstrap.min.js"></script>
+</head>
+<body>
+    <%- include('adminnav.ejs')%>
+    <div class="container">
+    <%for(let user of users){%>
+    <table class="table">
+            <thead>
+                <tr><td><%=user.name%></td></tr>
+                <tr>
+                    <td></td><td>Date</td>
+                    <td>Weight</td>
+                    <td>Waist</td>
+                    <td>Hip</td>
+                    <td>chest</td>
+                    <td>Right Arm</td>
+                    <td>Right Thigh</td>
+                    <td>Left Arm</td>
+                    <td>Left Thigh</td>
+                    
+    
+                </tr>
+            </thead>
+            <tbody>
+                
+                    <% for( let data of user.measure) { %>
+                        <tr>
+                            <td></td><td><%=data.date.toLocaleDateString('en-US')%></td>
+                            
+                            <td><%=data.weight%> kg</td>
+                            <td><%=data.waist%> cm</td>
+                            <td><%=data.hip%> cm</td>
+                            <td><%=data.chest%> cm</td>
+                            <td><%=data.rightArm%> cm</td>
+                            <td><%=data.rightThigh%> cm</td>
+                            <td><%=data.leftArm%> cm</td>
+                            <td><%=data.leftThigh%> cm</td>
+                            
+                            
+                        </tr>
+                        
+                        
+                    <% } %>
+                </tbody>
+            </table>
+        
+            <%}%></div>
+</body>
+</html>

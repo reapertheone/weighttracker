@@ -5,10 +5,10 @@ const ejs = require('ejs')
 const path = require('path')
 const mongoose = require('mongoose')
 const session = require('express-session')
-
+const fs=require('fs')
 const helmet = require('helmet')
 const MongoDBStore = require('connect-mongo')(session);
-
+//const dotenv=require('dotenv').config()
 const dbUrl = process.env.DB_URL||"mongodb://localhost:27017/newtestbase";
 
 
@@ -32,7 +32,7 @@ mongoose.connect(dbUrl, {
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
-    console.log("Database connected");
+    console.log(`Database connected to ${dbUrl}`);
 });
 
 
@@ -75,17 +75,17 @@ app.get('/', async (req, res) => {
     if(!result){
         res.render('register')
     }else{
-    req.session.message=false
+    
     res.redirect('/login')}
 })
 
 app.get('/login', (req, res) => {
-    req.session.uid=null
-    req.session.isAdmin=null
+   
     if(req.session.message){
     const message=req.session.message
     res.render('login',{message})
     }else{
+        req.session.message={body:false,status:false}
         const message=req.session.message
 
         res.render('login',{message})   
@@ -94,22 +94,25 @@ app.get('/login', (req, res) => {
 })
 
 app.post('/login', async (req, res) => {
-    req.session.message=false
+    req.session.message={body:false,status:false}
     const { name, email, birth } = req.body
-    const result = await User.findOne({ name, email, birth }).catch((err) => {
-        throw err
-    })
+    const result = await User.findOne({ name, email, birth })
+    
 
     if (!result) {
         res.redirect('/login')
+        console.log(result)
+        console.log(secret)
     } else {
+        console.log(req.session.isAdmin)
         req.session.isAdmin=result.isAdmin
         req.session.uid=result._id
 
         if(req.session.isAdmin){
+            console.log('baj')
             res.redirect('/admin')
         }else{
-            res.redirect(`/${result._id}`)
+            res.redirect(`/${req.session.uid}`)
         }
     }
 })
@@ -127,6 +130,7 @@ app.post('/register', async (req, res) => {
     if(!firstUser){
         const user = User({ name, email, birth, height,isAdmin:true })
         user.save()
+        res.redirect('/login')
     }else{
         if (!result && !emailResult) {
 
@@ -152,14 +156,13 @@ app.get('/admin', async (req, res) => {
     if (!req.session.uid) {
         res.redirect('/login')
     } else {
-        admin = await User.findById(req.session.uid)
-        if (admin.email == process.env.ADMIN) {
-            req.session.isAdmin = true
-            results = await User.find({})
-            res.render('admin', { results })
-        } else {
+        if(req.session.isAdmin){results = await User.find({})
+        res.render('admin', { results })}else{
             res.redirect('/login')
         }
+        
+            
+        
 
 
     }
@@ -180,6 +183,18 @@ app.get('/admin/clients', async (req, res) => {
     } else { res.redirect('/login') }
 })
 
+app.get('/admin/export',async (req,res)=>{
+    if(req.session.isAdmin){
+    const users = await User.find({isClient:true}).populate('measure')
+    
+    res.render('export',{users})
+    }else{
+        req.session.message={body:"You don't have permission",status:"danger"}
+        res.redirect('/login')
+        
+    }
+    
+})
 
 app.get('/admin/:uid/measures/new', async (req, res) => {
     if (!req.session.uid) { res.send('Smth went wrong') } else {

@@ -102,7 +102,7 @@ app.post('/login', async (req, res) => {
 
             res.redirect('/admin')
         } else if (!req.session.isAdmin && req.session.uid) {
-            
+            req.session.isAdmin=false
             res.redirect(`/${req.session.uid}`)
         } else {
             res.redirect('/login')
@@ -173,7 +173,7 @@ app.get('/admin/clients', async (req, res) => {
 app.get('/admin/:uid/measures/new', async (req, res) => {
     if (!req.session.uid) { res.send('Smth went wrong') } else {
         isAdmin=req.session.isAdmin
-        const user = await User.findById(req.session.uid)
+        const user = await User.findById(req.params.uid)
 
 
         res.render('new', { user,isAdmin })
@@ -182,13 +182,13 @@ app.get('/admin/:uid/measures/new', async (req, res) => {
 
 app.post('/admin/:uid/measures/new', async (req, res) => {
     if (req.session.isAdmin) {
-        const { height, weight, waist, hip, chest, rightArm, rightThigh, leftArm, leftThigh } = req.body
+        const {weight, waist, hip, chest, rightArm, rightThigh, leftArm, leftThigh } = req.body
         const user = await User.findById(req.params.uid)
         const measures = Measure({ weight: weight, waist: waist, hip: hip, chest: chest, rightArm: rightArm, rightThigh: rightThigh, leftArm: leftArm, leftThigh: leftThigh })
         await measures.save()
         user.measure.push(measures)
         await user.save()
-        res.redirect(`/admin/${req.session.uid}`)
+        res.redirect(`/admin/${req.params.uid}`)
     } else {
         res.redirect('/login')
     }
@@ -248,20 +248,18 @@ app.get('/:uid/:measureid', async (req, res) => {
 })
 
 app.post('/:uid/:measureid', async (req, res) => {
-    result = await User.findOne({ measure: req.params.measureid })
-    if (!result) {
-        res.send('no data')
-    } else {
-        if (result._id == req.params.uid && req.session.uid == req.params.uid) {
-            const measure = await Measure.findByIdAndUpdate(req.params.measureid, req.body)
+    const measureSearch=await Measure.findById(req.params.measureid)
+    if(measureSearch){
+        const measureUpdate=await Measure.findByIdAndUpdate(req.params.measureid,req.body)
+        const measure=await Measure.findById(req.params.measureid)
+        const user=User.findOne({'measure':req.params.measureid})
+        if(req.session.isAdmin){
+        res.redirect(`/admin/${req.params.uid}`)
+        }else{
             res.redirect(`/${req.params.uid}`)
-        }else if(req.session.isAdmin){
-            res.redirect(`/admin/${req.params.uid}`)
-        } 
-        
-        else {
-            res.send('something went wrong')
         }
+    }else{
+        res.send('No Data')
     }
 })
 
@@ -269,7 +267,7 @@ app.post('/:uid/:measureid', async (req, res) => {
 app.get('/:uid/measures/new', async (req, res) => {
     if (!req.session.uid) { res.send('Smth went wrong') } else {
         const isAdmin=req.session.isAdmin
-        const user = await User.findById(req.session.uid)
+        const user = await User.findById(req.params.uid)
 
 
         res.render('new', { user,isAdmin })
@@ -278,13 +276,17 @@ app.get('/:uid/measures/new', async (req, res) => {
 
 app.post('/:uid/measures/new', async (req, res) => {
     if (req.session.uid) {
-        const { height, weight, waist, hip, chest, rightArm, rightThigh, leftArm, leftThigh } = req.body
+        const {weight, waist, hip, chest, rightArm, rightThigh, leftArm, leftThigh } = req.body
         const user = await User.findById(req.params.uid)
         const measures = Measure({ weight: weight, waist: waist, hip: hip, chest: chest, rightArm: rightArm, rightThigh: rightThigh, leftArm: leftArm, leftThigh: leftThigh })
         await measures.save()
         user.measure.push(measures)
         await user.save()
+        if(req.session.isAdmin){
+            res.redirect(`/admin/${req.session.uid}`) 
+        }else{
         res.redirect(`/${req.session.uid}`)
+        }
     } else {
         res.redirect('/login')
     }

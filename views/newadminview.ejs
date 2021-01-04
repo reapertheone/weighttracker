@@ -48,7 +48,7 @@
                 <h5 class="card-header text-light text-center">Controls</h5>
                 <div class="card-body rounded">
                     <ul class="list-group list-group-flush rounded">
-                        <li class="list-group-item text-center"><a class=" btn btn-primary text-center align-middle mt-2" href=<%= `${user._id}/measures/new`%> >New measure</a></li>
+                        <li class="list-group-item text-center"><a class=" btn btn-primary text-center align-middle mt-2" href=<%= `/admin/${user._id}/measures/new`%> >New measure</a></li>
                         <%if(user.measure.length>=1){%>
                             <li class="list-group-item text-center"><a class="btn btn-warning mt-2"  href=<%= `/${user._id}/${user.measure[user.measure.length-1]._id}`%>>Change last measure</a></li>
                         <%}%>

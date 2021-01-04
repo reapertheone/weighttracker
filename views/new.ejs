@@ -17,7 +17,11 @@
 
     <div class="container">
     <div class="row-align-items-center">
-    <form action=<%=`/${user._id}/measures/new`%> method="POST">
+    <%if(isAdmin){%>
+    <form action=<%=`/admin/${user._id}/measures/new`%> method="POST">
+    <%}else{%>    
+        <form action=<%=`/${user._id}/measures/new`%> method="POST">  
+        <%}%>
         <label for="weight">Weight</label><br>
         <input type="number" max="300" step="0.01" name="weight" id="weight" required><label>kg</label><br>
         <label for="waist">Waist diameter</label><br>

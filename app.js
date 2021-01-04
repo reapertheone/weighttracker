@@ -75,6 +75,8 @@ app.get('/', (req, res) => {
 })
 
 app.get('/login', (req, res) => {
+    req.session.uid=null
+    req.session.isAdmin=null
     if(req.session.message){
     const message=req.session.message
     res.render('login',{message})
